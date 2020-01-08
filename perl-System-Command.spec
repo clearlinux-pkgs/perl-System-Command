@@ -4,7 +4,7 @@
 #
 Name     : perl-System-Command
 Version  : 1.119
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/B/BO/BOOK/System-Command-1.119.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BO/BOOK/System-Command-1.119.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsystem-command-perl/libsystem-command-perl_1.119-1.debian.tar.xz
@@ -12,6 +12,7 @@ Summary  : 'Object for running system commands'
 Group    : Development/Tools
 License  : Artistic-1.0 Artistic-1.0-Perl GPL-1.0
 Requires: perl-System-Command-license = %{version}-%{release}
+Requires: perl-System-Command-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 BuildRequires : perl(IPC::Run)
 
@@ -25,6 +26,7 @@ use System::Command;
 Summary: dev components for the perl-System-Command package.
 Group: Development
 Provides: perl-System-Command-devel = %{version}-%{release}
+Requires: perl-System-Command = %{version}-%{release}
 
 %description dev
 dev components for the perl-System-Command package.
@@ -38,18 +40,28 @@ Group: Default
 license components for the perl-System-Command package.
 
 
+%package perl
+Summary: perl components for the perl-System-Command package.
+Group: Default
+Requires: perl-System-Command = %{version}-%{release}
+
+%description perl
+perl components for the perl-System-Command package.
+
+
 %prep
 %setup -q -n System-Command-1.119
-cd ..
-%setup -q -T -D -n System-Command-1.119 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libsystem-command-perl_1.119-1.debian.tar.xz
+cd %{_builddir}/System-Command-1.119
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/System-Command-1.119/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/System-Command-1.119/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -59,7 +71,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -68,7 +80,8 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-System-Command
-cp LICENSE %{buildroot}/usr/share/package-licenses/perl-System-Command/LICENSE
+cp %{_builddir}/System-Command-1.119/LICENSE %{buildroot}/usr/share/package-licenses/perl-System-Command/835b44d894888b64a0a916852e75b34d0a9c25dd
+cp %{_builddir}/System-Command-1.119/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-System-Command/ddc9fa9e1985900f098122f6284ff2c563498596
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -81,8 +94,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/System/Command.pm
-/usr/lib/perl5/vendor_perl/5.28.2/System/Command/Reaper.pm
 
 %files dev
 %defattr(-,root,root,-)
@@ -91,4 +102,10 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-System-Command/LICENSE
+/usr/share/package-licenses/perl-System-Command/835b44d894888b64a0a916852e75b34d0a9c25dd
+/usr/share/package-licenses/perl-System-Command/ddc9fa9e1985900f098122f6284ff2c563498596
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/System/Command.pm
+/usr/lib/perl5/vendor_perl/5.30.1/System/Command/Reaper.pm
