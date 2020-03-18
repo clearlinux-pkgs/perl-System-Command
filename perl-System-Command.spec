@@ -4,7 +4,7 @@
 #
 Name     : perl-System-Command
 Version  : 1.119
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/B/BO/BOOK/System-Command-1.119.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BO/BOOK/System-Command-1.119.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsystem-command-perl/libsystem-command-perl_1.119-1.debian.tar.xz
@@ -81,7 +81,7 @@ make TEST_VERBOSE=1 test
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-System-Command
 cp %{_builddir}/System-Command-1.119/LICENSE %{buildroot}/usr/share/package-licenses/perl-System-Command/835b44d894888b64a0a916852e75b34d0a9c25dd
-cp %{_builddir}/System-Command-1.119/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-System-Command/ddc9fa9e1985900f098122f6284ff2c563498596
+cp %{_builddir}/debian/copyright %{buildroot}/usr/share/package-licenses/perl-System-Command/ddc9fa9e1985900f098122f6284ff2c563498596
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -107,5 +107,5 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.1/System/Command.pm
-/usr/lib/perl5/vendor_perl/5.30.1/System/Command/Reaper.pm
+/usr/lib/perl5/vendor_perl/5.30.2/System/Command.pm
+/usr/lib/perl5/vendor_perl/5.30.2/System/Command/Reaper.pm
