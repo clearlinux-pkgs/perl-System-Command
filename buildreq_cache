@@ -1,2 +1,6 @@
-1.119
+1.121
 perl(IPC::Run)
+perl(Pod::Coverage::TrustPod)
+perl(Test::CPAN::Meta)
+perl(Test::Pod)
+perl(Test::Pod::Coverage)
